@@ -31,14 +31,14 @@ config_integration.trace_integrations(["requests"])
 # TODO: Setup logger
 logger = logging.getLogger(__name__)
 handler = AzureLogHandler(
-    connection_string="InstrumentationKey=5df5f108-1fa2-4a3d-81b3-be725c1459e6"
+    connection_string="InstrumentationKey=e38c188a-6cf9-4222-9366-58edd54bff37"
 )
 handler.setFormatter(logging.Formatter("%(traceId)s %(spanId)s %(message)s"))
 logger.addHandler(handler)
 # Logging custom Events
 logger.addHandler(
     AzureEventHandler(
-        connection_string="InstrumentationKey=5df5f108-1fa2-4a3d-81b3-be725c1459e6"
+        connection_string="InstrumentationKey=e38c188a-6cf9-4222-9366-58edd54bff37"
     )
 )
 # Set the logging level
@@ -46,7 +46,9 @@ logger.setLevel(logging.INFO)
 
 # Metrics
 # TODO: Setup exporter
-exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string="InstrumentationKey=5df5f108-1fa2-4a3d-81b3-be725c1459e6",)
+exporter = metrics_exporter.new_metrics_exporter(
+    enable_standard_metrics=True,
+    connection_string="InstrumentationKey=e38c188a-6cf9-4222-9366-58edd54bff37",)
 view_manager.register_exporter(exporter)
 
 
@@ -54,7 +56,7 @@ view_manager.register_exporter(exporter)
 # TODO: Setup tracer
 tracer = Tracer(
     exporter=AzureExporter(
-        connection_string="InstrumentationKey=5df5f108-1fa2-4a3d-81b3-be725c1459e6"
+        connection_string="InstrumentationKey=e38c188a-6cf9-4222-9366-58edd54bff37"
     ),
     sampler=ProbabilitySampler(1.0),
 )
@@ -66,7 +68,7 @@ app = Flask(__name__)
 middleware = FlaskMiddleware(
     app,
     exporter=AzureExporter(
-        connection_string="InstrumentationKey=5df5f108-1fa2-4a3d-81b3-be725c1459e6"
+        connection_string="InstrumentationKey=e38c188a-6cf9-4222-9366-58edd54bff37"
     ),
     sampler=ProbabilitySampler(rate=1.0),
 )
@@ -152,6 +154,6 @@ def index():
 
 if __name__ == "__main__":
     # TODO: Use the statement below when running locally
-    app.run() # local
+    #app.run() # local
     # TODO: Use the statement below before deployment to VMSS
-    #app.run(host='0.0.0.0', threaded=True, debug=True) # remote
+    app.run(host='0.0.0.0', threaded=True, debug=True) # remote
